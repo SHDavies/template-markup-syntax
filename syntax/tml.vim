@@ -24,8 +24,14 @@ syn keyword tmlRepeat contained containedin=tmlTag each delimited-list delimiter
 " Tag names (keywords) - other
 syn keyword tmlKeyword contained containedin=tmlTag insert render no-leading-space
 
-" Close tag names - keywords for known tags
-syn keyword tmlCloseTagName contained containedin=tmlCloseTag if each delimited-list
+" Close tag names - conditionals (matches opening tag highlighting)
+syn keyword tmlCloseConditional contained containedin=tmlCloseTag if if-not else else-if else-if-not
+
+" Close tag names - repeat/loop (matches opening tag highlighting)
+syn keyword tmlCloseRepeat contained containedin=tmlCloseTag each delimited-list delimiter
+
+" Close tag names - other keywords (matches opening tag highlighting)
+syn keyword tmlCloseKeyword contained containedin=tmlCloseTag insert render no-leading-space
 
 " Close tag names - generic pattern for any close tag
 syn match tmlCloseTagName /[a-z][a-z0-9-]*/ contained containedin=tmlCloseTag
@@ -67,6 +73,9 @@ hi def link tmlEscape SpecialChar
 hi def link tmlConditional Conditional
 hi def link tmlRepeat Repeat
 hi def link tmlKeyword Keyword
+hi def link tmlCloseConditional Conditional
+hi def link tmlCloseRepeat Repeat
+hi def link tmlCloseKeyword Keyword
 hi def link tmlCloseTagName Function
 hi def link tmlTagName Function
 hi def link tmlReference Identifier
