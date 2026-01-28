@@ -1,0 +1,81 @@
+" Vim syntax file for Template Markup Language
+" Language: TML (Template Markup Language)
+
+if exists("b:current_syntax")
+  finish
+endif
+
+" Escape sequences (highest priority - must come first)
+syn match tmlEscape /\\./
+
+" Tag structure - using regions for proper nesting
+" Opening tags: {tag_name: parameters}
+syn region tmlTag matchgroup=tmlBrace start=/{/ end=/}/ contains=tmlTagName,tmlColon,tmlReference,tmlNamedParam,tmlString,tmlNumber,tmlSymbol oneline
+
+" Close tags: {:tag_name}
+syn region tmlCloseTag matchgroup=tmlBrace start=/{:/ end=/}/ contains=tmlCloseTagName oneline
+
+" Tag names (keywords) - conditional
+syn keyword tmlConditional contained containedin=tmlTag if if-not else else-if else-if-not
+
+" Tag names (keywords) - repeat/loop
+syn keyword tmlRepeat contained containedin=tmlTag each delimited-list delimiter
+
+" Tag names (keywords) - other
+syn keyword tmlKeyword contained containedin=tmlTag insert render no-leading-space
+
+" Close tag names - keywords for known tags
+syn keyword tmlCloseTagName contained containedin=tmlCloseTag if each delimited-list
+
+" Close tag names - generic pattern for any close tag
+syn match tmlCloseTagName /[a-z][a-z0-9-]*/ contained containedin=tmlCloseTag
+
+" Colon separator
+syn match tmlColon /:/ contained containedin=tmlTag
+
+" References: variable_name, object.attribute, predicate?
+syn match tmlReference /[a-z][a-z0-9_]*\(\.[a-z][a-z0-9_]*\)*?\?/ contained containedin=tmlTag contains=tmlRefinement
+
+" Named parameters: name=value
+syn match tmlNamedParam /[a-z][a-z-]*=/ contained containedin=tmlTag
+
+" String literals
+syn region tmlString start=/"/ skip=/\\"/ end=/"/ contained containedin=tmlTag
+
+" Number literals
+syn match tmlNumber /\<\d\+\(\.\d\+\)\?\>/ contained containedin=tmlTag
+
+" Symbol values (unquoted identifiers in parameters)
+syn match tmlSymbol /=[a-zA-Z_-]\+/ contained containedin=tmlTag
+
+" Generic tag name - matches right after opening brace using lookbehind
+" This ensures tag names are only matched at the start of a tag, not in parameters
+syn match tmlTagName /\%({\)\@<=[a-z][a-z0-9-]*/ contained containedin=tmlTag
+
+" Error markers
+syn region tmlError matchgroup=tmlErrorDelim start=/{error:}/ end=/{:error}/
+
+" Refinements (methods called on references via dot notation)
+" Matches: any predicate method ending in ? (e.g., .plural?, .empty?)
+" Also matches known refinements: long_format, no_period, delimited, dollars, etc.
+syn match tmlRefinement /\.\([a-z][a-z0-9_]*?\|long_format\|no_period\|delimited\|dollars\|dollars_and_cents\|words_for_single_digits\)/ contained
+
+" Highlight links
+hi def link tmlBrace Delimiter
+hi def link tmlColon Delimiter
+hi def link tmlEscape SpecialChar
+hi def link tmlConditional Conditional
+hi def link tmlRepeat Repeat
+hi def link tmlKeyword Keyword
+hi def link tmlCloseTagName Function
+hi def link tmlTagName Function
+hi def link tmlReference Identifier
+hi def link tmlNamedParam Label
+hi def link tmlString String
+hi def link tmlNumber Number
+hi def link tmlSymbol Constant
+hi def link tmlError Error
+hi def link tmlErrorDelim Error
+hi def link tmlRefinement Function
+
+let b:current_syntax = "tml"

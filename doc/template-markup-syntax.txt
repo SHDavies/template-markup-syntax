@@ -1,0 +1,66 @@
+*template-markup-syntax.txt*  Syntax highlighting for Template Markup Language
+
+==============================================================================
+CONTENTS                                    *template-markup-syntax-contents*
+
+    1. Introduction .................. |template-markup-syntax-intro|
+    2. Installation .................. |template-markup-syntax-install|
+    3. Configuration ................. |template-markup-syntax-config|
+    4. Syntax Elements ............... |template-markup-syntax-elements|
+
+==============================================================================
+1. INTRODUCTION                                *template-markup-syntax-intro*
+
+Template Markup Syntax provides syntax highlighting for Template Markup
+Language (TML) files in Neovim. TML is a text templating language that uses
+`{tag: parameters}` syntax for variable interpolation, conditionals, loops,
+and other template constructs.
+
+==============================================================================
+2. INSTALLATION                              *template-markup-syntax-install*
+
+Using lazy.nvim: >lua
+    { "SHDavies/template-markup-syntax" }
+<
+Using packer.nvim: >lua
+    use "SHDavies/template-markup-syntax"
+<
+Using vim-plug: >vim
+    Plug 'SHDavies/template-markup-syntax'
+<
+
+==============================================================================
+3. CONFIGURATION                              *template-markup-syntax-config*
+
+The plugin works out of the box with default settings. To customize:
+>lua
+    require("template-markup-syntax").setup({
+      -- Glob patterns for files to treat as TML
+      -- Default: { "**/templates/**/*.txt" }
+      patterns = {
+        "**/templates/**/*.txt",
+      },
+    })
+<
+
+==============================================================================
+4. SYNTAX ELEMENTS                          *template-markup-syntax-elements*
+
+Tags:                                              *template-markup-syntax-tags*
+    {insert: reference}         Variable interpolation
+    {if: condition}...{:if}     Conditional block
+    {each: items as=var}        Loop over collection
+    {render: object}            Render nested template
+
+References:                                  *template-markup-syntax-references*
+    variable_name               Simple reference
+    object.attribute            Nested attribute access
+    value.refinement            Method call (e.g., .long_format)
+    predicate?                  Predicate suffix
+
+Escape sequences:                              *template-markup-syntax-escape*
+    \{                          Literal opening brace
+    \}                          Literal closing brace
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:

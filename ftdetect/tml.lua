@@ -1,0 +1,2 @@
+-- This file exists for compatibility but detection is handled by the plugin
+-- Users who don't call setup() will still get default detection
