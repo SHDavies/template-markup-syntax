@@ -5,6 +5,10 @@ if exists("b:current_syntax")
   finish
 endif
 
+" Include hyphen in keyword characters so hyphenated keywords (else-if,
+" delimited-list, etc.) are treated as single words
+syn iskeyword @,48-57,_,-
+
 " Escape sequences (highest priority - must come first)
 syn match tmlEscape /\\./
 
@@ -24,6 +28,16 @@ syn keyword tmlRepeat contained containedin=tmlTag each delimited-list delimiter
 " Tag names (keywords) - other
 syn keyword tmlKeyword contained containedin=tmlTag insert render no-leading-space
 
+" Tag names (keywords) - document structure and formatting
+syn keyword tmlStructure contained containedin=tmlTag
+	\ bold italic underline
+	\ p heading-1 heading-2 heading-3 heading-4
+	\ signature date-signature signature-block signature-block-signature
+	\ signature-page-preamble signature-page-footer prescribed-legend
+	\ line-break column-break page-break section-break tab
+	\ white-space non-breaking-hyphen non-breaking-space footer
+	\ level-1 level-2 level-3
+
 " Close tag names - conditionals (matches opening tag highlighting)
 syn keyword tmlCloseConditional contained containedin=tmlCloseTag if if-not else else-if else-if-not
 
@@ -33,14 +47,24 @@ syn keyword tmlCloseRepeat contained containedin=tmlCloseTag each delimited-list
 " Close tag names - other keywords (matches opening tag highlighting)
 syn keyword tmlCloseKeyword contained containedin=tmlCloseTag insert render no-leading-space
 
+" Close tag names - document structure and formatting (matches opening tag highlighting)
+syn keyword tmlCloseStructure contained containedin=tmlCloseTag
+	\ bold italic underline
+	\ p heading-1 heading-2 heading-3 heading-4
+	\ signature date-signature signature-block signature-block-signature
+	\ signature-page-preamble signature-page-footer prescribed-legend
+	\ line-break column-break page-break section-break tab
+	\ white-space non-breaking-hyphen non-breaking-space footer
+	\ level-1 level-2 level-3
+
 " Close tag names - generic pattern for any close tag
 syn match tmlCloseTagName /[a-z][a-z0-9-]*/ contained containedin=tmlCloseTag
 
 " Colon separator
 syn match tmlColon /:/ contained containedin=tmlTag
 
-" References: variable_name, object.attribute, predicate?
-syn match tmlReference /[a-z][a-z0-9_]*\(\.[a-z][a-z0-9_]*\)*?\?/ contained containedin=tmlTag contains=tmlRefinement
+" References: variable_name, kebab-case-name, object.attribute, predicate?
+syn match tmlReference /[a-z][a-z0-9_-]*\(\.[a-z][a-z0-9_-]*\)*?\?/ contained containedin=tmlTag contains=tmlRefinement
 
 " Named parameters: name=value
 syn match tmlNamedParam /[a-z][a-z-]*=/ contained containedin=tmlTag
@@ -51,8 +75,8 @@ syn region tmlString start=/"/ skip=/\\"/ end=/"/ contained containedin=tmlTag
 " Number literals
 syn match tmlNumber /\<\d\+\(\.\d\+\)\?\>/ contained containedin=tmlTag
 
-" Symbol values (unquoted identifiers in parameters)
-syn match tmlSymbol /=[a-zA-Z_-]\+/ contained containedin=tmlTag
+" Symbol values (unquoted identifiers in parameters, after = sign)
+syn match tmlSymbol /\(=\)\@<=[a-zA-Z0-9_-]\+/ contained containedin=tmlTag
 
 " Generic tag name - matches right after opening brace using lookbehind
 " This ensures tag names are only matched at the start of a tag, not in parameters
@@ -76,6 +100,8 @@ hi def link tmlKeyword Keyword
 hi def link tmlCloseConditional Conditional
 hi def link tmlCloseRepeat Repeat
 hi def link tmlCloseKeyword Keyword
+hi def link tmlStructure Type
+hi def link tmlCloseStructure Type
 hi def link tmlCloseTagName Function
 hi def link tmlTagName Function
 hi def link tmlReference Identifier
