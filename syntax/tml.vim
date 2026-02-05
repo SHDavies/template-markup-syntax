@@ -88,7 +88,7 @@ syn region tmlError matchgroup=tmlErrorDelim start=/{error:}/ end=/{:error}/
 " Refinements (methods called on references via dot notation)
 " Matches: any predicate method ending in ? (e.g., .plural?, .empty?)
 " Also matches known refinements: long_format, no_period, delimited, dollars, etc.
-syn match tmlRefinement /\.\([a-z][a-z0-9_]*?\|long_format\|no_period\|delimited\|dollars\|dollars_and_cents\|words_for_single_digits\)/ contained
+syn match tmlRefinement /\.\([a-z][a-z0-9_]*?\|long_format\|upcase\|downcase\|no_period\|delimited\|dollars\|dollars_and_cents\|words_for_single_digits\)/ contained
 
 " Highlight links
 hi def link tmlBrace Delimiter
