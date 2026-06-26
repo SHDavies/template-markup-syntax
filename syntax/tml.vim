@@ -23,39 +23,43 @@ syn region tmlCloseTag matchgroup=tmlBrace start=/{:/ end=/}/ contains=tmlCloseT
 syn keyword tmlConditional contained containedin=tmlTag if if-not else else-if else-if-not
 
 " Tag names (keywords) - repeat/loop
-syn keyword tmlRepeat contained containedin=tmlTag each delimited-list delimiter
+syn keyword tmlRepeat contained containedin=tmlTag each delimited-list delimiter enumerated-list enumerator
 
 " Tag names (keywords) - other
 syn keyword tmlKeyword contained containedin=tmlTag insert render no-leading-space
 
 " Tag names (keywords) - document structure and formatting
 syn keyword tmlStructure contained containedin=tmlTag
-	\ bold italic underline
-	\ p heading-1 heading-2 heading-3 heading-4
-	\ signature date-signature signature-block signature-block-signature
-	\ signature-page-preamble signature-page-footer prescribed-legend
+	\ bold italic underline uppercase
+	\ p
+	\ signature-field inline-signature-field signing-role party-name
+	\ hyperlink bookmark bookmark-link bookmark-link-full bookmark-link-final-segment
+	\ page-number section-title-page
+	\ table table-row table-row-header table-cell
+	\ text-box footnote wingdings-symbol
 	\ line-break column-break page-break section-break tab
 	\ white-space non-breaking-hyphen non-breaking-space footer
-	\ level-1 level-2 level-3
 
 " Close tag names - conditionals (matches opening tag highlighting)
 syn keyword tmlCloseConditional contained containedin=tmlCloseTag if if-not else else-if else-if-not
 
 " Close tag names - repeat/loop (matches opening tag highlighting)
-syn keyword tmlCloseRepeat contained containedin=tmlCloseTag each delimited-list delimiter
+syn keyword tmlCloseRepeat contained containedin=tmlCloseTag each delimited-list delimiter enumerated-list enumerator
 
 " Close tag names - other keywords (matches opening tag highlighting)
 syn keyword tmlCloseKeyword contained containedin=tmlCloseTag insert render no-leading-space
 
 " Close tag names - document structure and formatting (matches opening tag highlighting)
 syn keyword tmlCloseStructure contained containedin=tmlCloseTag
-	\ bold italic underline
-	\ p heading-1 heading-2 heading-3 heading-4
-	\ signature date-signature signature-block signature-block-signature
-	\ signature-page-preamble signature-page-footer prescribed-legend
+	\ bold italic underline uppercase
+	\ p
+	\ signature-field inline-signature-field signing-role party-name
+	\ hyperlink bookmark bookmark-link bookmark-link-full bookmark-link-final-segment
+	\ page-number section-title-page
+	\ table table-row table-row-header table-cell
+	\ text-box footnote wingdings-symbol
 	\ line-break column-break page-break section-break tab
 	\ white-space non-breaking-hyphen non-breaking-space footer
-	\ level-1 level-2 level-3
 
 " Close tag names - generic pattern for any close tag
 syn match tmlCloseTagName /[a-z][a-z0-9-]*/ contained containedin=tmlCloseTag
@@ -68,6 +72,11 @@ syn match tmlReference /[a-z][a-z0-9_-]*\(\.[a-z][a-z0-9_-]*\)*?\?/ contained co
 
 " Named parameters: name=value
 syn match tmlNamedParam /[a-z][a-z-]*=/ contained containedin=tmlTag
+
+" Positional style/symbol values: an uppercase-led symbol naming a document
+" style, e.g. {p Center}, {p Heading1}, {table: TableGrid ...}
+" (The negative lookbehind avoids re-matching a PascalCase named-parameter value.)
+syn match tmlStyle /\%(=\)\@<!\<[A-Z][a-zA-Z0-9_-]*/ contained containedin=tmlTag
 
 " String literals
 syn region tmlString start=/"/ skip=/\\"/ end=/"/ contained containedin=tmlTag
@@ -88,7 +97,7 @@ syn region tmlError matchgroup=tmlErrorDelim start=/{error:}/ end=/{:error}/
 " Refinements (methods called on references via dot notation)
 " Matches: any predicate method ending in ? (e.g., .plural?, .empty?)
 " Also matches known refinements: long_format, no_period, delimited, dollars, etc.
-syn match tmlRefinement /\.\([a-z][a-z0-9_]*?\|long_format\|upcase\|downcase\|no_period\|delimited\|dollars\|dollars_and_cents\|words_for_single_digits\)/ contained
+syn match tmlRefinement /\.\([a-z][a-z0-9_]*?\|long_format\|no_period\|delimited\|dollars\|dollars_and_cents\|words_for_single_digits\|non_breaking_spaces\)/ contained
 
 " Highlight links
 hi def link tmlBrace Delimiter
@@ -102,6 +111,7 @@ hi def link tmlCloseRepeat Repeat
 hi def link tmlCloseKeyword Keyword
 hi def link tmlStructure Type
 hi def link tmlCloseStructure Type
+hi def link tmlStyle Type
 hi def link tmlCloseTagName Function
 hi def link tmlTagName Function
 hi def link tmlReference Identifier

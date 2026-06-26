@@ -32,8 +32,11 @@ When modifying `syntax/tml.vim`, these are the key TML patterns:
 | Opening tags | `{keyword: params}` |
 | Closing tags | `{:keyword}` |
 | References | `object.attribute.nested?` |
-| Named params | `as=item` |
+| Named params | `as=item`, `numbering-id=5`, `keep-next=true` |
+| Positional styles | `{p Center}`, `{p Heading1}`, `{table: TableGrid ...}` |
 | Refinements | `.long_format`, `.plural?`, `.dollars` |
 | Escapes | `\{`, `\}` |
 
-Keywords are categorized as: conditionals (`if`, `else`, `else-if`), loops (`each`, `delimited-list`), and general (`insert`, `render`).
+Keywords are categorized as: conditionals (`if`, `else`, `else-if`), loops (`each`, `delimited-list`, `enumerated-list`), and general (`insert`, `render`).
+
+Positional style names are uppercase-led symbols (e.g. `Center`, `Heading1`, `TableGrid`) — distinct from lowercase references and named parameters. The `{p}` tag (docx-markup) applies a paragraph style by name with optional params (`numbering-id`, `numbering-level`, `keep-next`, `restart-numbering`, `bookmark`). Document/character-style and table tags (`bold`, `uppercase`, `hyperlink`, `bookmark`, `table`, `table-cell`, `text-box`, `footnote`, etc.) come from docx-markup; templating keywords come from template-markup. Both layers share the same grammar (`template-markup/lib/template_markup/text-markup-grammar.txt`), which is the source of truth for tag/parameter structure.
